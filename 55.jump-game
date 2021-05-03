@@ -1,0 +1,9 @@
+    bool canJump(vector<int>& nums) {
+        int cur = 0, n = nums.size();
+        
+        for (int i = 0; i < n; ++i) {
+            if (cur < i) return false; 
+            cur = max(cur, i + nums[i]); 
+        }
+        return true;
+    }
