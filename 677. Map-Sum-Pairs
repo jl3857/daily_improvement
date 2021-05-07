@@ -1,0 +1,52 @@
+class MapSum {
+    struct Node {
+        int val; 
+        Node * child[26];
+        
+        Node () : val(0) {
+            for (auto & a : child) a = NULL; 
+        }
+    };
+    
+public:
+    Node * root;
+    
+    /** Initialize your data structure here. */
+    MapSum() {
+        root = new Node();
+    }
+    
+    void insert(string key, int val) {
+        Node * p = root; 
+        
+        for (auto c : key) {
+            int i = c - 'a';
+            
+            if (!p -> child[i]) p -> child[i] = new Node();
+            p = p -> child[i];
+        }
+        p -> val = val; 
+    }
+    
+    int sum(string prefix) {
+        Node * p = root; 
+        
+        for (auto c : prefix) {
+            int i = c - 'a';
+            if (!p -> child[i]) p -> child[i] = new Node(); 
+            p = p -> child[i];
+        }
+        int res = 0; 
+        dfs(p, res);
+        return res; 
+    }
+    
+    void dfs(Node * p, int & res) {
+        if (!p) return;
+        
+        res += p -> val; 
+        for (int i = 0; i < 26; ++i) {
+            dfs(p -> child[i], res);
+        }
+    }
+};
