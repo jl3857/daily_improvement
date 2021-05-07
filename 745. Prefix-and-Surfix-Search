@@ -1,0 +1,54 @@
+class WordFilter {
+    struct Node {
+        Node * child[27];
+        vector<int> ids; 
+        Node () {
+            for (auto & a : child) a = NULL; 
+        }
+    };
+    Node * root; 
+    
+public:
+    
+    WordFilter(vector<string>& words) {
+        root = new Node();
+        int n = words.size(); 
+        
+        for (int i = 0; i < n; ++i) {
+            string s = words[i];
+            
+            for (int j = 0; j < s.size(); ++j) {
+                string t = s.substr(j);
+                reverse(t.begin(), t.end());
+                insert(root, t + '{' + s, i);
+            }
+            insert(root, '{' + s, i);
+        }
+    }
+    
+    void insert(Node * root, string s, int id) {
+        Node * p = root; 
+        
+        for (auto c : s) {
+            int i = c - 'a';
+            if (!p -> child[i]) p -> child[i] = new Node();
+            p = p -> child[i];
+            
+            p -> ids.push_back(id);
+        }
+    }
+    
+    int f(string prefix, string suffix) {
+        Node * p = root; 
+        
+        reverse(suffix.begin(), suffix.end());
+        string s = suffix + '{' + prefix; 
+        
+        for (auto c : s) {
+            int i = c - 'a';
+            if (!p -> child[i]) return -1; 
+            p = p -> child[i];
+        }
+        return p -> ids.back();
+    }
+};
