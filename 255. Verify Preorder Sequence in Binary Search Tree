@@ -1,0 +1,16 @@
+    bool verifyPreorder(vector<int>& preorder) {
+        stack<int> st; 
+        int n = preorder.size(), low = INT_MIN; 
+        
+        for (auto a : preorder) {
+            if (a < low) return false; 
+            
+            while (!st.empty() && a > st.top()) {
+                low = st.top(); 
+                st.pop();
+            }
+            
+            st.push(a);
+        }
+        return true;
+    }
